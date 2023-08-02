@@ -82,7 +82,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     TextFormField(
-                      key: Key("email controller"),
                       controller: emailController,
                       keyboardType: TextInputType.emailAddress,
                       onChanged: (email) {
@@ -150,7 +149,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       return TextFormField(
                         controller: passwordController,
                         keyboardType: TextInputType.text,
-                        key: Key("password controller"),
                         obscureText: snapshot2.data == true ? true : false,
                         enableSuggestions: false,
                         autocorrect: false,
@@ -273,7 +271,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     width: maxWidth(context),
                     child: TextButton(
-                      key: Key("login button"),
+
                       onPressed: snapshot1.hasError || snapshot2.hasError || snapshot1.data == null || snapshot2.data == null
                           ? () {}
                           : loginHandler,
@@ -375,7 +373,7 @@ class _LoginScreenState extends State<LoginScreen> {
               builder: (BuildContext context) {
                 return AlertDialog(
                   title: const Text('Error'),
-                  content: const Text('Invalid username or password'),
+                  content: Text(state.message),
                   actions: [
                     TextButton(
                       onPressed: () => Navigator.pop(context),
