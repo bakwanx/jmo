@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jmo/presentation/login/cubit/form_login_validation_cubit.dart';
 import 'package:jmo/presentation/login/cubit/login_cubit.dart';
 import 'package:jmo/presentation/main/main_screen.dart';
+import 'package:jmo/presentation/widgets/custom_circular_progress_indicator.dart';
 import 'package:jmo/utils/theme/style.dart';
 
 import '../../utils/constant/assets_path.dart';
@@ -104,7 +105,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         suffixIcon: snapshot1.hasError
                             ? IconButton(
                                 onPressed: () {},
-                                icon: Icon(
+                                icon: const Icon(
                                   Icons.warning_amber,
                                   color: Colors.red,
                                 ),
@@ -257,53 +258,69 @@ class _LoginScreenState extends State<LoginScreen> {
       }
 
       Widget loginButton() {
-        return StreamBuilder(
-            stream:
-                BlocProvider.of<FormLoginValidationCubit>(context).emailStream,
-            builder: (context1, snapshot1) {
-              return StreamBuilder<Object>(
-                stream: BlocProvider.of<FormLoginValidationCubit>(context)
-                    .passwordStream,
-                builder: (context2, snapshot2) {
-                  return Container(
-                    margin: EdgeInsets.only(
-                      top: defaultMargin,
-                    ),
-                    width: maxWidth(context),
-                    child: TextButton(
-
-                      onPressed: snapshot1.hasError || snapshot2.hasError || snapshot1.data == null || snapshot2.data == null
-                          ? () {}
-                          : loginHandler,
-                      style: TextButton.styleFrom(
-                        backgroundColor:
-                        snapshot1.hasError || snapshot2.hasError || snapshot1.data == null || snapshot2.data == null
-                                ? Colors.grey.shade400
-                                : primaryColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(
-                            4,
-                          ),
-                        ),
-                      ),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 9,
-                        ),
-                        child: Text(
-                          "Login",
-                          style: primaryTextStyle.copyWith(
-                            color: Colors.white,
-                            fontWeight: bold,
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-                    ),
-                  );
-                },
+        return BlocBuilder<LoginCubit, LoginState>(
+          builder: (context, state) {
+            if(state is OnLoadingLogin){
+              return CustomCircularProgressIndicator(
+                margin: EdgeInsets.only(
+                  top: defaultMargin,
+                ),
               );
-            });
+            }
+            return StreamBuilder(
+              stream: BlocProvider.of<FormLoginValidationCubit>(context)
+                  .emailStream,
+              builder: (context1, snapshot1) {
+                return StreamBuilder<Object>(
+                  stream: BlocProvider.of<FormLoginValidationCubit>(context)
+                      .passwordStream,
+                  builder: (context2, snapshot2) {
+                    return Container(
+                      margin: EdgeInsets.only(
+                        top: defaultMargin,
+                      ),
+                      width: maxWidth(context),
+                      child: TextButton(
+                        onPressed: snapshot1.hasError ||
+                                snapshot2.hasError ||
+                                snapshot1.data == null ||
+                                snapshot2.data == null
+                            ? () {}
+                            : loginHandler,
+                        style: TextButton.styleFrom(
+                          backgroundColor: snapshot1.hasError ||
+                                  snapshot2.hasError ||
+                                  snapshot1.data == null ||
+                                  snapshot2.data == null
+                              ? Colors.grey.shade400
+                              : primaryColor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                              4,
+                            ),
+                          ),
+                        ),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 9,
+                          ),
+                          child: Text(
+                            "Login",
+                            style: primaryTextStyle.copyWith(
+                              color: Colors.white,
+                              fontWeight: bold,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+            );
+          },
+        );
       }
 
       Widget registerButton() {
@@ -368,18 +385,80 @@ class _LoginScreenState extends State<LoginScreen> {
               MaterialPageRoute(builder: (context) => const MainScreen()),
             );
           } else if (state is FailedLogin) {
-            showDialog(
+            showDialog<void>(
               context: context,
               builder: (BuildContext context) {
-                return AlertDialog(
-                  title: const Text('Error'),
-                  content: Text(state.message),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: const Text('OK'),
+                return Dialog(
+                  insetPadding: EdgeInsets.all(10),
+                  child: Container(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Wrap(
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      children: [
+                        Center(
+                          child: Container(
+                            margin: const EdgeInsets.only(
+                              top: 10,
+                            ),
+                            child: Image.asset(
+                              icNoDocument,
+                              width: 80,
+                            ),
+                          ),
+                        ),
+                        Center(
+                          child: Container(
+                            margin: const EdgeInsets.only(
+                              top: 16,
+                            ),
+                            child: Text(
+                              state.message,
+                              style: primaryTextStyle.copyWith(
+                                fontWeight: light,
+                                fontSize: 16,
+                                color: greyColorText,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                        Center(
+                          child: Container(
+                            width: maxWidth(context),
+                            margin: const EdgeInsets.only(
+                              top: 28,
+                              bottom: 10,
+                            ),
+                            child: TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              style: TextButton.styleFrom(
+                                backgroundColor: primaryColor,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                              ),
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 8,
+                                ),
+                                child: Text(
+                                  "OK",
+                                  style: primaryTextStyle.copyWith(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 );
               },
             );
