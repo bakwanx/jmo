@@ -1,6 +1,4 @@
 import 'dart:convert';
-
-import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:jmo/data_providers/models/article_model.dart';
 import 'package:jmo/utils/constant/url_path.dart';
@@ -8,10 +6,10 @@ import 'package:jmo/utils/constant/url_path.dart';
 class NewsRepository {
   final http.Client client;
   NewsRepository(this.client);
-  static const PAGE_SIZE = 11;
-  Future<List<ArticleModel>> getAnotherNews(int page) async {
+
+  Future<List<ArticleModel>> getAnotherNews(int pageSize, int page) async {
     final response = await client.get(
-      uriAnotherNews(PAGE_SIZE, page),
+      uriAnotherNews(pageSize, page),
     );
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);

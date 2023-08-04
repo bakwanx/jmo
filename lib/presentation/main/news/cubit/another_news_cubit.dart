@@ -15,7 +15,6 @@ class AnotherNewsCubit extends Cubit<AnotherNewsState> {
   int page = 1;
 
   Future<void> getAnotherNews() async {
-
     if(state is OnLoadingAnotherNews) return;
     final currentState = state;
 
@@ -26,9 +25,8 @@ class AnotherNewsCubit extends Cubit<AnotherNewsState> {
     }
     emit(OnLoadingAnotherNews(oldNews, isFirstFetch: page == 1));
 
-
     try {
-      final listArticles = await NewsRepository(client).getAnotherNews(page);
+      final listArticles = await NewsRepository(client).getAnotherNews(11, page);
       page ++;
       final articles = (state as OnLoadingAnotherNews).oldArticleModels;
       articles.addAll(listArticles);

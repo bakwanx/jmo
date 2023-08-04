@@ -109,8 +109,8 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
 
     return Scaffold(
       appBar: AppBar(
-
         centerTitle: true,
+        backgroundColor: Colors.transparent,
         title: Text(
           'Berita',
           style: primaryTextStyle.copyWith(

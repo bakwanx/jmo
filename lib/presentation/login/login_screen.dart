@@ -19,9 +19,19 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
+  void init(){
+    BlocProvider.of<FormLoginValidationCubit>(context).updateObscureStatus(isFirst: true);
+  }
+
   void loginHandler() {
     BlocProvider.of<LoginCubit>(context)
         .login(emailController.text, passwordController.text);
+  }
+
+  @override
+  void initState() {
+    init();
+    super.initState();
   }
 
   @override
@@ -157,7 +167,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           BlocProvider.of<FormLoginValidationCubit>(context1)
                               .updatePassword(password);
                         },
-                        onTap: () {},
                         decoration: InputDecoration(
                           labelText: "Kata Sandi",
                           labelStyle: primaryTextStyle.copyWith(

@@ -15,15 +15,16 @@ class FormLoginValidationCubit extends Cubit<FormLoginValidationState> {
   final _obscureTextStream = BehaviorSubject<bool>();
   Stream<bool> get obscureTextStream => _obscureTextStream.stream;
 
-  updateObscureStatus(){
+  updateObscureStatus({bool isFirst = false}){
+    if(isFirst){
+      _obscureTextStream.sink.add(false);
+    }
     if(_obscureTextStream.hasValue == true){
       if(_obscureTextStream.value == false){
         _obscureTextStream.sink.add(true);
       } else {
         _obscureTextStream.sink.add(false);
       }
-    } else {
-      _obscureTextStream.sink.add(false);
     }
   }
 

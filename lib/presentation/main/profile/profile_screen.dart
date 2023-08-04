@@ -73,6 +73,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
               color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 1,
+                  blurRadius: 4,
+                  offset: const Offset(0, 1), // changes position of shadow
+                ),
+              ],
             ),
             child: Column(
               children: [
@@ -230,7 +238,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     color: Colors.black,
                   ),
                 ),
-                trailing: Icon(Icons.keyboard_arrow_right),
+                trailing: i == 0 ? Container(
+                  decoration: BoxDecoration(
+                    color: Colors.blue.shade50,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 8,
+                  ),
+                  child: Icon(
+                    Icons.edit,
+                    color: Colors.blue.shade700,
+                    size: 18,
+                  ),
+                ) : Icon(Icons.keyboard_arrow_right),
                 onTap: () {},
               ),
               Divider(
@@ -261,10 +283,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
       Widget logOut() {
         return Container(
-          margin: const EdgeInsets.only(
-            top: 8,
-            left: 16,
-            right: 16,
+          margin: EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: defaultMargin,
           ),
           width: maxWidth(context),
           child: InkWell(
@@ -358,16 +379,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
         );
       }
 
-      return Container(
-        margin: const EdgeInsets.only(
-          top: 8,
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            menuList(),
-            logOut(),
-          ],
+      return Expanded(
+        child: Container(
+          margin: const EdgeInsets.only(
+            top: 8,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              menuList(),
+              logOut(),
+            ],
+          ),
         ),
       );
     }
