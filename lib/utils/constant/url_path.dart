@@ -1,4 +1,4 @@
-const baseUrl = "http://192.168.68.105:8080";
+const baseUrl = "http://10.10.6.62:8080";
 
 // Uri uriBitcoinNews() {
 //   return Uri.parse("https://newsapi.org/v2/everything?q=bitcoin&apiKey=2afb93176dcd4198b16ccae08f9ddc99&pageSize=5");

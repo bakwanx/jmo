@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:jmo/data_providers/models/article_model.dart';
+import 'package:jmo/presentation/news_detail/news_detail_screen.dart';
 import 'package:jmo/utils/constant/assets_path.dart';
+import 'package:jmo/utils/helper/format_helper.dart';
 
 import '../../../../utils/theme/style.dart';
 
@@ -9,17 +11,27 @@ class NewsItem extends StatelessWidget {
   final double height;
   final double width;
   EdgeInsets? margin = EdgeInsets.all(12);
-  NewsItem({super.key, required this.articleModel, required this.height, required this.width, this.margin});
+
+  NewsItem(
+      {super.key,
+      required this.articleModel,
+      required this.height,
+      required this.width,
+      this.margin});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: (){
-        // go to news detail
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => NewsDetailScreen(articleModel: articleModel),
+          ),
+        );
       },
       child: Container(
         margin: margin,
-        height: height,
         width: width,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(4)),
@@ -36,30 +48,54 @@ class NewsItem extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ClipRRect(
-              borderRadius: const BorderRadius.only(topLeft: Radius.circular(4), topRight: Radius.circular(4)),
-              child: Image.network(
-                articleModel.urlToImage.toString(),
-                height: height * 0.7,
-                width: width,
-                fit: BoxFit.fill,
-                errorBuilder: (context, obj, stackTrace){
-                  return Image.asset(
-                    ilusNews,
-                    width: width,
+            Stack(
+              children: [
+                ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(4),
+                    topRight: Radius.circular(4),
+                  ),
+                  child: Image.network(
+                    articleModel.urlToImage.toString(),
                     height: height * 0.7,
-                    fit: BoxFit.contain,
-                  );
-                },
-              ),
-            ),
-            const SizedBox(
-              height: 8,
+                    width: width,
+                    fit: BoxFit.fill,
+                    errorBuilder: (context, obj, stackTrace) {
+                      return Image.asset(
+                        ilusNews,
+                        width: width,
+                        height: height * 0.7,
+                        fit: BoxFit.contain,
+                      );
+                    },
+                  ),
+                ),
+                Positioned.fill(
+                  child: Align(
+                    alignment: Alignment.bottomLeft,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.all(Radius.circular(4)),
+                        color: primaryColor,
+                      ),
+                      margin: const EdgeInsets.only(
+                        left: 12,
+                        bottom: 12,
+                      ),
+                      padding: EdgeInsets.all(3),
+                      child: Text(
+                        FormatHelper.formatDate(
+                            articleModel.publishedAt.toString()),
+                        style: primaryTextStyle.copyWith(
+                            fontSize: 10, color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
             Container(
-              margin: const EdgeInsets.symmetric(
-                horizontal: 16
-              ),
+              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
               color: Colors.white,
               child: Text(
                 articleModel.title,

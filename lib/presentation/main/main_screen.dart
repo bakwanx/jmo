@@ -18,116 +18,120 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
-
     Widget body() {
       return StreamBuilder<Object>(
-          stream: BlocProvider.of<NavigatorCubit>(context)
-              .currentIndexPageStream,
+          stream:
+              BlocProvider.of<NavigatorCubit>(context).currentIndexPageStream,
           builder: (context, snapshot) {
             switch (snapshot.data) {
               case 0:
                 return HomeScreen();
-                break;
               case 1:
                 return NewsScreen();
-                break;
               case 2:
                 return DigitalCardScreen();
-                break;
               case 3:
-                return ProfileScreen();
-                break;
+                return Container();
               default:
                 return HomeScreen();
             }
-          }
-      );
+          });
     }
 
-    Widget bottomNav(){
+    Widget bottomNav() {
       return StreamBuilder<Object>(
-          stream: BlocProvider.of<NavigatorCubit>(context)
-              .currentIndexPageStream,
-        builder: (context, snapshot) {
-          return Container(
-            decoration: const BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                  color: Color.fromRGBO(0, 0, 0, 0.1),
-                  blurRadius: 40,
-                  offset: Offset(
-                    4,
-                    4,
-                  ),
-                ),
-              ],
-            ),
-            child: BottomNavigationBar(
-              unselectedLabelStyle: primaryTextStyle,
-              unselectedItemColor: Colors.grey,
-              selectedItemColor: primaryColor,
-              backgroundColor: Colors.white,
-              type: BottomNavigationBarType.fixed,
-              currentIndex: snapshot.data == null ? 0 : snapshot.data as int,
-              onTap: (value) {
-                BlocProvider.of<NavigatorCubit>(context)
-                  .setCurrentIndexPage(value);
-              },
-              items: [
-                BottomNavigationBarItem(
-                  icon: Container(
-                    margin: const EdgeInsets.only(
-                      top: 10,
-                      bottom: 4,
+          stream:
+              BlocProvider.of<NavigatorCubit>(context).currentIndexPageStream,
+          builder: (context, snapshot) {
+            return Container(
+              decoration: const BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Color.fromRGBO(0, 0, 0, 0.1),
+                    blurRadius: 40,
+                    offset: Offset(
+                      4,
+                      4,
                     ),
-                    child: Container(
-                      child: Image.asset(
-                        icHome,
-                        width: 27,
-                        color: snapshot.data == 0 || snapshot.data == null ? primaryColor : Colors.grey,
+                  ),
+                ],
+              ),
+              child: BottomNavigationBar(
+                unselectedLabelStyle: primaryTextStyle,
+                unselectedItemColor: Colors.grey,
+                selectedItemColor: primaryColor,
+                backgroundColor: Colors.white,
+                type: BottomNavigationBarType.fixed,
+                currentIndex: snapshot.data == null ? 0 : snapshot.data as int,
+                onTap: (value) {
+                  if (value != 3) {
+                    BlocProvider.of<NavigatorCubit>(context)
+                        .setCurrentIndexPage(value);
+                  } else {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ProfileScreen(),
+                      ),
+                    );
+                  }
+                },
+                items: [
+                  BottomNavigationBarItem(
+                    icon: Container(
+                      margin: const EdgeInsets.only(
+                        top: 10,
+                        bottom: 4,
+                      ),
+                      child: Container(
+                        child: Image.asset(
+                          icHome,
+                          width: 27,
+                          color: snapshot.data == 0 || snapshot.data == null
+                              ? primaryColor
+                              : Colors.grey,
+                        ),
                       ),
                     ),
+                    label: 'Beranda',
                   ),
-                  label: 'Beranda',
-                ),
-                BottomNavigationBarItem(
-                  icon: Container(
-                    margin: const EdgeInsets.only(top: 10, bottom: 4),
-                    child: Image.asset(
-                      icNews,
-                      width: 27,
-                      color: snapshot.data == 1 ? primaryColor : Colors.grey,
+                  BottomNavigationBarItem(
+                    icon: Container(
+                      margin: const EdgeInsets.only(top: 10, bottom: 4),
+                      child: Image.asset(
+                        icNews,
+                        width: 27,
+                        color: snapshot.data == 1 ? primaryColor : Colors.grey,
+                      ),
                     ),
+                    label: 'Berita',
                   ),
-                  label: 'Berita',
-                ),
-                BottomNavigationBarItem(
-                  icon: Container(
-                    margin: const EdgeInsets.only(top: 10, bottom: 4),
-                    child: Image.asset(
-                      icCreditCard,
-                      width: 27,
-                      color: snapshot.data == 2 ? primaryColor : Colors.grey,
+                  BottomNavigationBarItem(
+                    icon: Container(
+                      margin: const EdgeInsets.only(top: 10, bottom: 4),
+                      child: Image.asset(
+                        icCreditCard,
+                        width: 27,
+                        color: snapshot.data == 2 ? primaryColor : Colors.grey,
+                      ),
                     ),
+                    label: 'Kartu Digital',
                   ),
-                  label: 'Kartu Digital',
-                ),
-                BottomNavigationBarItem(
-                  icon: Container(
-                    margin: const EdgeInsets.only(top: 10, bottom: 4),
-                    child: Image.asset(
-                      icProfile,
-                      width: 27,
-                      color: snapshot.data == 3 ? primaryColor : Colors.grey,
+                  BottomNavigationBarItem(
+                    icon: Container(
+                      margin: const EdgeInsets.only(top: 10, bottom: 4),
+                      child: Image.asset(
+                        icProfile,
+                        width: 27,
+                        color: snapshot.data == 3 ? primaryColor : Colors.grey,
+                      ),
                     ),
+                    label: 'Profile',
                   ),
-                  label: 'Profile',
-                ),
-              ],
-            ),
-          );
-        }
-      );
+                ],
+              ),
+            );
+          });
     }
 
     return Scaffold(

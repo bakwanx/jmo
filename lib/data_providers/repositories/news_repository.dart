@@ -8,7 +8,7 @@ import 'package:jmo/utils/constant/url_path.dart';
 class NewsRepository {
   final http.Client client;
   NewsRepository(this.client);
-  static const PAGE_SIZE = 10;
+  static const PAGE_SIZE = 11;
   Future<List<ArticleModel>> getAnotherNews(int page) async {
     final response = await client.get(
       uriAnotherNews(PAGE_SIZE, page),
