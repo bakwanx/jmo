@@ -8,9 +8,10 @@ double defaultRadius = 8.0;
 double maxHeight(context) => MediaQuery.of(context).size.height;
 double maxWidth(context) => MediaQuery.of(context).size.width;
 
-Color primaryColor = Color(0xff6BB875);
-Color secondaryColor = Color(0xffE2F6E7);
+Color primaryColor = const Color(0xff6BB875);
+Color secondaryColor = const Color(0xffE2F6E7);
 Color greyColorText = Colors.grey.shade500;
+Color yellowColor = const Color(0xffF1C041);
 
 TextStyle primaryTextStyle = GoogleFonts.outfit(
     color: primaryColor

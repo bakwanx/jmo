@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jmo/presentation/login/login_screen.dart';
-import 'package:jmo/presentation/onboarding/cubit/splash_cubit.dart';
+import 'package:jmo/presentation/main/news/cubit/another_news_cubit.dart';
+import 'package:jmo/presentation/main/news/cubit/new_news_cubit.dart';
 import 'package:jmo/utils/constant/assets_path.dart';
 import 'package:jmo/utils/theme/style.dart';
 
@@ -19,55 +22,49 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
   }
 
-  void startTimer() {
-    BlocProvider.of<SplashCubit>(context, listen: false).startTimer();
+  Future<void> startTimer() async {
+    Timer(Duration(seconds: 2), () {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const LoginScreen(),
+        ),
+      );
+    });
+
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<SplashCubit, SplashState>(
-      listener: (context, state) {
-        if (state is SplashFinish) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const LoginScreen(),
+    return Scaffold(
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: Align(
+              alignment: Alignment.center,
+              child: Image.asset(
+                logoApp,
+                width: 300,
+              ),
             ),
-          );
-        }
-      },
-      builder: (context, state) {
-        return Scaffold(
-          body: Stack(
-            children: [
-              Positioned.fill(
-                child: Align(
-                  alignment: Alignment.center,
-                  child: Image.asset(
-                    logoApp,
-                    width: 300,
-                  ),
-                ),
-              ),
-              Positioned.fill(
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Container(
-                    margin: EdgeInsets.only(bottom: defaultMargin),
-                    child: Text(
-                      "APLIKASI RESMI LAYANAN DIGITAL BPJAMSOSTEK",
-                      style: primaryTextStyle.copyWith(
-                        color: greyColorText,
-                        fontSize: 12,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
           ),
-        );
-      },
+          Positioned.fill(
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                margin: EdgeInsets.only(bottom: defaultMargin),
+                child: Text(
+                  "APLIKASI RESMI LAYANAN DIGITAL BPJAMSOSTEK",
+                  style: primaryTextStyle.copyWith(
+                    color: greyColorText,
+                    fontSize: 12,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
