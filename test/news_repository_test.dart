@@ -80,17 +80,17 @@ void main() {
           () => mockHTTPClient.get(
             any(),
           ),
-        ).thenAnswer((invocation) async {
+        ).thenAnswer((_) async {
           return Response(
-            jsonEncode({"articles": articleResponse}),
+            "Something when wrong",
             500,
           );
         });
 
-        final articleModel = await newsRepository.getAnotherNews(5, 1);
+        final articleModel = newsRepository.getAnotherNews;
 
-        expect(articleModel, throwsException);
-        expect(5, articleModel.length);
+        expect(() => articleModel(5, 1), throwsA(TypeMatcher<Exception>()));
+        // expect(5, articleModel.length);
       },
     );
 
